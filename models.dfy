@@ -1,5 +1,4 @@
 module Models {
-
   // --------------------------------------------------
   // Types
   // --------------------------------------------------
@@ -11,7 +10,6 @@ module Models {
     | Recv(m: Message)
 
   datatype Transition = Transition(from: State, message: Action, target: State)
-
 
   predicate IsRecv(a: Action) {
     match a
@@ -43,7 +41,7 @@ module Models {
   }
 
   // --------------------------------------------------
-  // Wait-Only predicates
+  // Wait-Only
   // --------------------------------------------------
   predicate IsActive(p: Proc, q: State)
     requires q in p.Q
@@ -65,6 +63,9 @@ module Models {
     forall q :: q in p.Q ==> IsActive(p, q) || IsWaiting(p, q)
   }
 
+  // --------------------------------------------------
+  // Computations
+  // --------------------------------------------------
   method ComputeActiveStates(p: Proc) returns  (states: set<State>)
     requires WaitOnly(p)
     ensures forall q :: q in states && q in p.Q ==> IsActive(p, q) 
