@@ -3,11 +3,15 @@ include "Model.dfy"
 module Clique {
   import opened Model
   // --------------------------------------------------
-  // MODULE: Semantics considering complete graphs
+  // MODULE: Semantics considering complete graphs Kn
   // -------------------------------------------------
+
   trait CliqueSemantics {
     const p: Proc
     var v: map<nat, State>
+    method Step(m: Message)
+      requires p.Valid()
+      modifies this
   }
 
   predicate Sendable(p: Proc, m: Message, q: State) {
@@ -17,17 +21,18 @@ module Clique {
   predicate Receivable(p: Proc, m: Message, q: State) {
     exists t :: t in p.delta && t.from == q && t.message == Recv(m)
   }
-  
+
   // --------------------------------------------------
   // Reliable Broadcast
   // --------------------------------------------------
+
   class ReliableBroadcast extends CliqueSemantics{
-    constructor(process: Proc, clique: nat)
-        requires clique > 0
+    constructor(process: Proc, n: nat)
+        requires n > 0
       {
         p := process;
         var v:map<nat,State> := map[];
-        for i:nat := 1 to clique {
+        for i:nat := 1 to n {
           v := v[i := process.qinit];
         }
       }
