@@ -27,12 +27,13 @@ module Models {
   // Process type
   // --------------------------------------------------
   class Proc {
-    var Q: set<State>
-    var qinit: State
-    var delta: set<Transition>
+    const Q: set<State>
+    const qinit: State
+    const delta: set<Transition>
+    ghost predicate Valid() { Q != {} && qinit in Q }
 
     constructor(q0: State, states: set<State>, d: set<Transition>)
-      requires q0 in states
+      requires q0 in states && states != {}
     {
       qinit := q0;
       Q := states;
@@ -45,29 +46,27 @@ module Models {
   // --------------------------------------------------
   predicate IsActive(p: Proc, q: State)
     requires q in p.Q
-    reads p
   {
     forall t :: t in p.delta && t.from == q ==> !IsRecv(t.message)
   }
 
   predicate IsWaiting(p: Proc, q: State)
     requires q in p.Q
-    reads p
   {
     exists t2 :: t2 in p.delta && t2.from == q && IsRecv(t2.message) && forall t :: t in p.delta && t.from == q ==> !IsSend(t.message)
   }
 
   predicate WaitOnly(p: Proc)
-    reads p
+    requires p.Valid()
   {
-    forall q :: q in p.Q ==> IsActive(p, q) || IsWaiting(p, q)
+    IsActive(p,p.qinit) && forall q :: q in p.Q ==> IsActive(p, q) || IsWaiting(p, q)
   }
 
   // --------------------------------------------------
   // Computations
   // --------------------------------------------------
   method ComputeActiveStates(p: Proc) returns  (states: set<State>)
-    requires WaitOnly(p)
+    requires p.Valid() && WaitOnly(p)
     ensures forall q :: q in states && q in p.Q ==> IsActive(p, q) 
   {
     states := {};
@@ -85,7 +84,7 @@ module Models {
   }
 
   method ComputeWaitingStates(p: Proc) returns  (states: set<State>)
-    requires WaitOnly(p)
+    requires p.Valid() && WaitOnly(p)
     ensures forall q :: q in states && q in p.Q ==> IsWaiting(p, q)
   {
     states := {};
