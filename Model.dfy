@@ -31,7 +31,10 @@ module Model {
     const Q: set<State>
     const qinit: State
     const delta: set<Transition>
-    ghost predicate Valid() { Q != {} && qinit in Q }
+    ghost predicate Valid() { 
+      Q != {} && 
+      qinit in Q && 
+      forall t :: t in delta ==> t.from in Q && t.target in Q}
 
     constructor(q0: State, states: set<State>, d: set<Transition>)
       requires q0 in states && states != {}
