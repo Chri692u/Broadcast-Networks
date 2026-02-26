@@ -91,13 +91,13 @@ module Clique {
         var i :| i in v && Sendable(p, m, v[i]);
         var t :| t in p.delta && t.from == v[i] && t.message == Send(m);
         v' := v[i := t.target];
-        // Rest of the clique receives m or ignores
+        // Rest of the clique receives m (or ignores)
         for j := 1 to |v|+1
           invariant v'.Keys == v.Keys
         {
           if j != i && j in v {
             if ExistsReceiverIn(this, j, m) {
-              var ignore?: bool :| ignore? in {false, true}; // Bug, the SMT-solver picks one value for the entire example we need to find another way
+              var ignore?: bool :| ignore? in {false, true}; // Bug, the SMT-solver picks one value for the entire execution we need to find another way
               var t' :| t' in p.delta && t'.from == v[j] && t'.message == Recv(m);
               if ignore? {
                 v' := v'[j := t'.target];
