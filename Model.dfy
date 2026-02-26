@@ -3,8 +3,8 @@ module Model {
   // --------------------------------------------------
   // Types
   // --------------------------------------------------
-  type State(==,!new)
-  type Message(==,!new)
+  type State = string // parameterize later: type State(==, !new)
+  type Message = string // parameterize later: type Message(==, !new)
   
   datatype Action =
     | Send(m: Message)
@@ -36,11 +36,12 @@ module Model {
       qinit in Q && 
       forall t :: t in delta ==> t.from in Q && t.target in Q}
 
-    constructor(q0: State, states: set<State>, d: set<Transition>)
-      requires q0 in states && states != {}
+    constructor(q0: State, s: set<State>, d: set<Transition>)
+      requires q0 in s && s != {} && forall t :: t in d ==> t.from in s && t.target in s
+      ensures Valid()
     {
       qinit := q0;
-      Q := states;
+      Q := s;
       delta := d;
     }
   }
