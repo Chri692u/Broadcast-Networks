@@ -16,12 +16,18 @@ Semantics consider different topologies:
 ### Reachability
 todo
 
+# Compiling Dafny
+Dafny is a language that compiles to different targets such as Java, C# and Python. Here is a non-exhaustive list of options:
+- ...
+To build and run the code immediately, replace `build` with `run` in the command.
+
 # References
-todo: results
-### On the Complexity of Parameterized Reachability in Reconfigurable Broadcast Networks
-https://www.irif.fr/~sangnier/publis/DSTZ-FSTTCS12-long.pdf
 
+### [On Verification of Broadcast Protocols](https://archive.model.in.tum.de/um/bibdb/esparza/LICS99.pdf)
+The main result of this paper...
 
-### Safety Verification of Wait-Only Non-Blocking Broadcast Protocols
-https://arxiv.org/abs/2403.18591
+### [On the Complexity of Parameterized Reachability in Reconfigurable Broadcast Networks](https://www.irif.fr/~sangnier/publis/DSTZ-FSTTCS12-long.pdf)
+The main result of this paper...
 
+### [Safety Verification of Wait-Only Non-Blocking Broadcast Protocols](https://arxiv.org/abs/2403.18591)
+The main result of this paper...
