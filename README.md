@@ -9,6 +9,7 @@ Definitions of process types for broadcast networks:
 Definitions for the semantics of broadcast networks assuming reliable and unreliable communication. The semantics differ depending on the considered architectures:
 - Cliques
 - Arbitrary graphs
+
 The semantics introduce a parameter for network size along with a "step" function which allows for simulation of the networks.
 
 ### Reachability
@@ -23,6 +24,7 @@ Dafny is a language that compiles to different targets such as Java, C# and Pyth
 - dafny build -t:go MyProgram.dfy // For Golang
 - dafny build -t:cpp MyProgram.dfy // For C++
 - dafny build -t:rs MyProgram.dfy // For Rust
+
 To build and run the code immediately, replace `build` with `run` in the command. See [here](https://dafny.org/latest/Installation) for the installation process.
 
 # References
