@@ -97,8 +97,12 @@ module Clique {
         {
           if j != i && j in v {
             if ExistsReceiverIn(this, j, m) {
-              var ignore?: bool :| ignore? in {false, true}; // Bug, the SMT-solver picks one value for the entire execution we need to find another way
+              var ignore?: bool :| ignore? in {true, false}; // BUG: Always ignores, read below.
               var t' :| t' in p.delta && t'.from == v[j] && t'.message == Recv(m);
+              // BUG: The verifier seems to choose 1 value here, which is always the same value for all executions
+                   // I am not entirely sure how to deal with this, we need some way of adding a random choice...
+                   // The only thing I can think of is adding a parameter and use randomness in whatever language is calling the API
+                   // I dont really want to do this, so it will have to wait for now...
               if ignore? {
                 v' := v'[j := t'.target];
               }
